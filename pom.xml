@@ -18,7 +18,7 @@
         <docker.image.prefix>jevent</docker.image.prefix>
         <sonar.organization>robbyquintienspxl</sonar.organization>
         <sonar.host.url>https://sonarcloud.io</sonar.host.url>
-        <sonar.login>7b62a8f1fbe59657454b12f65a8bf71a30d88bfe</sonar.login>
+        <sonar.login>3b110457af6e5cfb06ad4594c04ba7db89af6cf2</sonar.login>
     </properties>
     <dependencies>
         <dependency>
