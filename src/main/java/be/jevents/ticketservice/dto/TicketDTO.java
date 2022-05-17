@@ -15,7 +15,7 @@ public class TicketDTO {
         this.id = ticket.getId();
         this.eventId = ticket.getEventId();
         this.event = ticket.getEvent();
-        this.ticketUserName = ticket.getTicketUser().getName() + " " + ticket.getTicketUser().getFirstName();
+        this.ticketUserName = ticket.getTicketUser().getUsername();
         this.ticketNumber = ticket.getTicketNumber();
     }
 
