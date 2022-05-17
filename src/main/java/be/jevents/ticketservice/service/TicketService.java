@@ -55,7 +55,7 @@ public class TicketService {
         Long id = foundTicket.get().getId();
         Event event = feignClient.getEvent(id);
         foundTicket.get().setEvent(event);
-        return foundTicket.map(TicketDTO::new).get();
+        return foundTicket.map(TicketDTO::new).orElse(null);
     }
 
     public int getSoldTicketsAmountForEvent(Long eventId) {
