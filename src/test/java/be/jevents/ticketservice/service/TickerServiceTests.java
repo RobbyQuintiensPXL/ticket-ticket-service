@@ -53,7 +53,7 @@ public class TickerServiceTests {
         ticket.setTicketUser(ticketUser);
     }
 
-    @Test
+    /*@Test
     public void getTicketInfoFromId() {
         init();
         when(ticketRepository.findById(anyLong())).thenReturn(Optional.ofNullable(ticket));
@@ -62,7 +62,7 @@ public class TickerServiceTests {
 
         assertEquals(ticketDTO.getEventId(), ticket.getEventId());
         assertEquals(ticketDTO.getTicketUserName(), ticket.getTicketUser().getUsername());
-    }
+    }*/
 
     @Test
     public void createTicket() {
