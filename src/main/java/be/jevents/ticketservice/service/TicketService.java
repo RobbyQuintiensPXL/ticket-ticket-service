@@ -2,7 +2,7 @@ package be.jevents.ticketservice.service;
 
 import be.jevents.ticketservice.createresource.CreateFullTicketResource;
 import be.jevents.ticketservice.dto.TicketDTO;
-import be.jevents.ticketservice.events.source.SimpleSourceBean;
+import be.jevents.ticketservice.events.TicketEvent;
 import be.jevents.ticketservice.exception.TicketException;
 import be.jevents.ticketservice.model.Event;
 import be.jevents.ticketservice.model.Ticket;
@@ -12,6 +12,8 @@ import be.jevents.ticketservice.repository.TicketUserRepository;
 import be.jevents.ticketservice.service.client.EventFeignClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,26 +25,26 @@ import java.util.stream.Collectors;
 public class TicketService {
 
     private final Logger LOGGER = LoggerFactory.getLogger(TicketService.class);
+    private final String TOPIC = "ticket";
 
-    private final SimpleSourceBean simpleSourceBean;
+    @Autowired
+    private KafkaTemplate<String, TicketEvent> kafkaTemplate;
 
     private final TicketRepository ticketRepository;
 
     private final TicketUserRepository ticketUserRepository;
 
     private final EventFeignClient feignClient;
-    private Event event;
 
-    public TicketService(SimpleSourceBean simpleSourceBean, TicketRepository ticketRepository,
+    public TicketService(TicketRepository ticketRepository,
                          EventFeignClient feignClient, TicketUserRepository ticketUserRepository) {
-        this.simpleSourceBean = simpleSourceBean;
         this.ticketRepository = ticketRepository;
         this.feignClient = feignClient;
         this.ticketUserRepository = ticketUserRepository;
     }
 
     public Event getEventInfo(Long eventId) {
-        event = feignClient.getEvent(eventId);
+        Event event = feignClient.getEvent(eventId);
         return event;
     }
 
@@ -66,10 +68,17 @@ public class TicketService {
         return ticketList.size();
     }
 
+    public List<TicketDTO> getEventsByUser(String username) {
+        List<TicketDTO> ticketList = ticketRepository.findTicketByUsername(username).stream().map(TicketDTO::new).collect(Collectors.toList());
+        if (ticketList.isEmpty()) {
+            throw new TicketException("No tickets found");
+        }
+        return ticketList;
+    }
+
     public void createTicket(CreateFullTicketResource ticketResource,
                              String username) {
         TicketUser ticketUser = new TicketUser();
-        ticketUser.setUsername(username);
         ticketUser.setName(ticketResource.getName());
         ticketUser.setFirstName(ticketResource.getFirstName());
         ticketUser.setStreet(ticketResource.getStreet());
@@ -85,7 +94,19 @@ public class TicketService {
         ticket.setEventId(ticketResource.getEventId());
         ticket.setStatus("PAYED");
         ticket.setTicketUser(ticketUser);
+        ticket.setUsername(username);
 
         ticketRepository.save(ticket);
+        LOGGER.info("Ticket created");
+
+        Event foundEvent = getEventInfo(ticketResource.getEventId());
+
+        TicketEvent ticketEvent = createTicketEvent(ticket, foundEvent, ticketUser);
+        kafkaTemplate.send(TOPIC, ticketEvent);
+        LOGGER.info("TicketEvent sended to mailservice");
+    }
+
+    public TicketEvent createTicketEvent(Ticket ticket, Event event, TicketUser ticketUser){
+        return new TicketEvent(ticket, event, ticketUser);
     }
 }

@@ -40,7 +40,6 @@ public class TicketUserRepositoryTests {
         ticketUser = new TicketUser();
         ticketUser.setName("Name");
         ticketUser.setFirstName("FirstName");
-        ticketUser.setUsername("Username");
         ticketUser.setEmail("username@test.be");
         ticketUser.setStreet("teststraat 5");
         ticketUser.setZipCode(3500);
@@ -54,6 +53,7 @@ public class TicketUserRepositoryTests {
         ticket.setEventId(1L);
         ticket.setStatus("PAYED");
         ticket.setTicketUser(ticketUser);
+        ticket.setUsername("Username");
 
         entityManager.persist(ticket);
         entityManager.flush();
@@ -67,7 +67,6 @@ public class TicketUserRepositoryTests {
         assertThat(ticketUserList).isNotEmpty();
         assertThat(ticketUserList.get(0).getEmail()).isEqualTo(ticketUser.getEmail());
         assertThat(ticketUserList.get(0).getCity()).isEqualTo(ticketUser.getCity());
-        assertThat(ticketUserList.get(0).getUsername()).isEqualTo(ticketUser.getUsername());
         assertThat(ticketUserList.get(0).getStreet()).isEqualTo(ticketUser.getStreet());
     }
 }

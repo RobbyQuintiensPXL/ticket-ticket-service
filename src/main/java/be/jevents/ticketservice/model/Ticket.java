@@ -23,6 +23,8 @@ public class Ticket {
 
     private String status;
 
+    private String username;
+
     public Ticket(){
         //Empty Constructor
     }
@@ -73,5 +75,13 @@ public class Ticket {
 
     public void setTicketNumber() {
         this.ticketNumber++;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 }

@@ -3,7 +3,6 @@ package be.jevents.ticketservice.createresource;
 public class CreateFullTicketResource {
 
     private final Long eventId;
-
     private final String username;
     private final String name;
     private final String firstName;

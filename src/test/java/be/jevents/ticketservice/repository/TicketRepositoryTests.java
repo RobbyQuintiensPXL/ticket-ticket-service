@@ -39,7 +39,6 @@ public class TicketRepositoryTests {
         ticketUser = new TicketUser();
         ticketUser.setName("Name");
         ticketUser.setFirstName("FirstName");
-        ticketUser.setUsername("Username");
         ticketUser.setEmail("username@test.be");
         ticketUser.setStreet("teststraat 5");
         ticketUser.setZipCode(3500);
@@ -53,6 +52,7 @@ public class TicketRepositoryTests {
         ticket.setEventId(1L);
         ticket.setStatus("PAYED");
         ticket.setTicketUser(ticketUser);
+        ticket.setUsername("Username");
 
         entityManager.persist(ticket);
         entityManager.flush();
