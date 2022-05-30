@@ -1,5 +1,6 @@
 package be.jevents.ticketservice.service;
 
+import be.jevents.ticketservice.config.PDFGenerator;
 import be.jevents.ticketservice.createresource.CreateFullTicketResource;
 import be.jevents.ticketservice.dto.TicketDTO;
 import be.jevents.ticketservice.events.TicketEvent;
@@ -25,10 +26,15 @@ import java.util.stream.Collectors;
 public class TicketService {
 
     private final Logger LOGGER = LoggerFactory.getLogger(TicketService.class);
-    private final String TOPIC = "ticket";
 
     @Autowired
     private KafkaTemplate<String, TicketEvent> kafkaTemplate;
+
+    @Autowired
+    private KafkaProducer kafkaProducer;
+
+    @Autowired
+    private PDFGenerator pdfGenerator;
 
     private final TicketRepository ticketRepository;
 
@@ -102,8 +108,10 @@ public class TicketService {
         Event foundEvent = getEventInfo(ticketResource.getEventId());
 
         TicketEvent ticketEvent = createTicketEvent(ticket, foundEvent, ticketUser);
-        kafkaTemplate.send(TOPIC, ticketEvent);
+        kafkaProducer.send(ticketEvent);
         LOGGER.info("TicketEvent sended to mailservice");
+
+        pdfGenerator.generatePDF("TEST");
     }
 
     public TicketEvent createTicketEvent(Ticket ticket, Event event, TicketUser ticketUser){

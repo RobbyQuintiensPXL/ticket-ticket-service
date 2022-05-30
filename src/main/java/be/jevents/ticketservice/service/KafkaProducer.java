@@ -6,7 +6,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.kafka.support.KafkaHeaders;
 import org.springframework.kafka.support.SendResult;
+import org.springframework.messaging.Message;
+import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.util.concurrent.ListenableFuture;
 import org.springframework.util.concurrent.ListenableFutureCallback;
 
@@ -14,27 +17,17 @@ import org.springframework.util.concurrent.ListenableFutureCallback;
 public class KafkaProducer {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(KafkaProducer.class);
+    private final String TOPIC = "ticket";
 
     @Autowired
     private KafkaTemplate<String, TicketEvent> kafkaTemplate;
 
-    public void send(String topic, TicketEvent ticket) {
-        LOGGER.info("sending ticket='{}' to topic='{}'", ticket, topic);
-        ListenableFuture<SendResult<String, TicketEvent>> future =
-                kafkaTemplate.send(topic, ticket);
-
-        future.addCallback(new ListenableFutureCallback<SendResult<String, TicketEvent>>() {
-            @Override
-            public void onSuccess(SendResult<String, TicketEvent> result) {
-                LOGGER.info("Sent ticket=[" + ticket +
-                        "] with offset=[" + result.getRecordMetadata().offset() + "]");
-            }
-
-            @Override
-            public void onFailure(Throwable ex) {
-                LOGGER.info("Unable to send ticket=["
-                        + ticket + "] due to : " + ex.getMessage());
-            }
-        });
+    public void send(TicketEvent ticket) {
+        LOGGER.info("sending ticket='{}", ticket);
+        Message<TicketEvent> message = MessageBuilder
+                .withPayload(ticket)
+                .setHeader(KafkaHeaders.TOPIC, TOPIC)
+                .build();
+        this.kafkaTemplate.send(message);
     }
 }
