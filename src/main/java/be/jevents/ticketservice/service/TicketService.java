@@ -111,7 +111,7 @@ public class TicketService {
         kafkaProducer.send(ticketEvent);
         LOGGER.info("TicketEvent sended to mailservice");
 
-        pdfGenerator.generatePDF("TEST");
+/*        pdfGenerator.generatePDF("TEST");*/
     }
 
     public TicketEvent createTicketEvent(Ticket ticket, Event event, TicketUser ticketUser){
