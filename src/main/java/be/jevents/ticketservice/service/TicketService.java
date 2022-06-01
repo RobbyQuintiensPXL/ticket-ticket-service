@@ -50,8 +50,7 @@ public class TicketService {
     }
 
     public Event getEventInfo(Long eventId) {
-        Event event = feignClient.getEvent(eventId);
-        return event;
+        return feignClient.getEvent(eventId);
     }
 
     public TicketDTO getTicketInfo(Long ticketId) {
