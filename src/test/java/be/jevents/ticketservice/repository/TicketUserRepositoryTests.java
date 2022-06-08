@@ -45,7 +45,7 @@ public class TicketUserRepositoryTests {
         ticketUser.setZipCode(3500);
         ticketUser.setCity("Hasselt");
         ticketUser.setCountry("Belguium");
-        ticketUser.setNumberOfTickets(1);
+       // ticketUser.setNumberOfTickets(1);
 
         entityManager.persist(ticketUser);
 

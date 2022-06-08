@@ -2,6 +2,7 @@ package be.jevents.ticketservice.model;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 public class TicketUser {
@@ -25,12 +26,6 @@ public class TicketUser {
     private String country;
 
     private String email;
-
-    @Column(name = "number_of_tickets")
-    private int numberOfTickets;
-
-    @OneToMany
-    private List<Ticket> tickets;
 
     public TicketUser() {
         // Empty constructor
@@ -101,19 +96,4 @@ public class TicketUser {
         this.email = email;
     }
 
-    public int getNumberOfTickets() {
-        return numberOfTickets;
-    }
-
-    public void setNumberOfTickets(int numberOfTickets) {
-        this.numberOfTickets = numberOfTickets;
-    }
-
-    public List<Ticket> getTickets() {
-        return tickets;
-    }
-
-    public void setTickets(List<Ticket> tickets) {
-        this.tickets = tickets;
-    }
 }

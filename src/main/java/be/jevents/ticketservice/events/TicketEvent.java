@@ -10,9 +10,9 @@ import java.time.LocalTime;
 
 public class TicketEvent {
 
-    private Long id;
+    private int ticketId;
+    private Long ticketUserId;
     private Long eventId;
-    private String ticketUserName;
     private String firstName;
     private String name;
     private String email;
@@ -22,28 +22,30 @@ public class TicketEvent {
     private LocalTime eventTime;
     private double price;
     private String buildingName;
+    private int amount;
 
-    public TicketEvent(Ticket ticket, Event event, TicketUser ticketUser) {
-        this.id = ticket.getId();
-        this.eventId = ticket.getEventId();
-        this.ticketUserName = ticket.getUsername();
+    public TicketEvent(int amount, int ticketId, Event event, TicketUser ticketUser) {
+        this.ticketId = ticketId;
+        this.ticketUserId = ticketUser.getId();
         this.firstName = ticketUser.getFirstName();
         this.name = ticketUser.getName();
         this.email = ticketUser.getEmail();
+        this.eventId = event.getId();
         this.eventName = event.getEventName();
         this.eventType = event.getEventType();
         this.eventDate = event.getEventDate();
         this.eventTime = event.getEventTime();
         this.price = event.getPrice();
         this.buildingName = event.getLocation().getBuildingName();
+        this.amount = amount;
     }
 
-    public Long getId() {
-        return id;
+    public int getTicketId() {
+        return ticketId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setTicketId(int ticketId) {
+        this.ticketId = ticketId;
     }
 
     public Long getEventId() {
@@ -52,14 +54,6 @@ public class TicketEvent {
 
     public void setEventId(Long eventId) {
         this.eventId = eventId;
-    }
-
-    public String getTicketUserName() {
-        return ticketUserName;
-    }
-
-    public void setTicketUserName(String ticketUserName) {
-        this.ticketUserName = ticketUserName;
     }
 
     public String getFirstName() {
@@ -132,5 +126,21 @@ public class TicketEvent {
 
     public void setBuildingName(String buildingName) {
         this.buildingName = buildingName;
+    }
+
+    public int getAmount() {
+        return amount;
+    }
+
+    public void setAmount(int amount) {
+        this.amount = amount;
+    }
+
+    public Long getTicketUserId() {
+        return ticketUserId;
+    }
+
+    public void setTicketUserId(Long ticketUserId) {
+        this.ticketUserId = ticketUserId;
     }
 }

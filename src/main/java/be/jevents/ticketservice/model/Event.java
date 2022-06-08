@@ -81,7 +81,6 @@ public class Event {
         this.location = location;
     }
 
-
     @Override
     public String toString() {
         return "Event{" +

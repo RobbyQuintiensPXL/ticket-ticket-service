@@ -15,7 +15,7 @@ public class Ticket {
     @Transient
     private Event event;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private TicketUser ticketUser;
 
     @Column(name = "ticket_number")
@@ -24,6 +24,8 @@ public class Ticket {
     private String status;
 
     private String username;
+
+    private boolean validated;
 
     public Ticket(){
         //Empty Constructor
@@ -73,8 +75,8 @@ public class Ticket {
         return ticketNumber;
     }
 
-    public void setTicketNumber() {
-        this.ticketNumber++;
+    public void setTicketNumber(int ticketNumber) {
+        this.ticketNumber = ticketNumber;
     }
 
     public String getUsername() {
@@ -83,5 +85,13 @@ public class Ticket {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public boolean isValidated() {
+        return validated;
+    }
+
+    public void setValidated(boolean validated) {
+        this.validated = validated;
     }
 }

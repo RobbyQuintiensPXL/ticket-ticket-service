@@ -7,7 +7,6 @@ import be.jevents.ticketservice.model.Ticket;
 import be.jevents.ticketservice.model.TicketUser;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.junit.Test;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -16,9 +15,6 @@ import org.springframework.kafka.test.context.EmbeddedKafka;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 
-import java.util.concurrent.TimeUnit;
-
-import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Mockito.mock;
 
 @SpringBootTest
@@ -54,12 +50,12 @@ public class KafkaProducerTests {
 
         event.setLocation(location);
 
-        ticketEvent = new TicketEvent(ticket, event, ticketUser);
+        ticketEvent = new TicketEvent(1, 2, event, ticketUser);
     }
 
 
     @Test
-    public void sendTest(){
+    public void sendTest() {
         init();
         producer = mock(KafkaProducer.class);
         producer.send(ticketEvent);

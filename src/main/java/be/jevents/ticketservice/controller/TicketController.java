@@ -53,6 +53,14 @@ public class TicketController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
+    @GetMapping("/validate/{eventId}/{ticketNumber}/{ticketUser}")
+    public ResponseEntity<Void> validateTicket(@PathVariable("ticketNumber") int ticketNumber,
+                                               @PathVariable("eventId") Long eventId,
+                                               @PathVariable("ticketUser") Long ticketUser) {
+        ticketService.validateTicket(ticketNumber, eventId, ticketUser);
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
     private String getUser(HttpHeaders token) {
         UserNameFilter filter = new UserNameFilter();
         return filter.getUsername(token);
