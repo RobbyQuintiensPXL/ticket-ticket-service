@@ -15,6 +15,7 @@ import org.springframework.kafka.test.context.EmbeddedKafka;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Mockito.mock;
 
 @SpringBootTest
@@ -59,7 +60,5 @@ public class KafkaProducerTests {
         init();
         producer = mock(KafkaProducer.class);
         producer.send(ticketEvent);
-
     }
-
 }

@@ -14,13 +14,13 @@ import org.springframework.messaging.support.MessageBuilder;
 public class KafkaProducer {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(KafkaProducer.class);
-    private final String TOPIC = "ticket";
+    private static final String TOPIC = "ticket";
 
     @Autowired
     private KafkaTemplate<String, TicketEvent> kafkaTemplate;
 
     public void send(TicketEvent ticket) {
-        LOGGER.info("sending ticket='{}", ticket);
+        LOGGER.info("sending ticket='{}", ticket.getTicketId());
         Message<TicketEvent> message = MessageBuilder
                 .withPayload(ticket)
                 .setHeader(KafkaHeaders.TOPIC, TOPIC)

@@ -105,6 +105,12 @@ public class TickerServiceTests {
         assertEquals(ticketDTO.getEventId(), ticket.getEventId());
         assertEquals(ticketDTO.getEvent().getEventName(), ticket.getEvent().getEventName());
         assertEquals(ticketDTO.getEvent().getEventType(), ticket.getEvent().getEventType());
+        assertEquals(ticketDTO.getEvent().getLocation().getBuildingName(), ticket.getEvent().getLocation().getBuildingName());
+        assertEquals(ticketDTO.getEvent().getLocation().getCity(), ticket.getEvent().getLocation().getCity());
+        assertEquals(ticketDTO.getEvent().getLocation().getAddress(), ticket.getEvent().getLocation().getAddress());
+        assertEquals(ticketDTO.getEvent().getLocation().getTicketOffice(), ticket.getEvent().getLocation().getTicketOffice());
+        assertEquals(ticketDTO.getEvent().getLocation().getCountry(), ticket.getEvent().getLocation().getCountry());
+        assertEquals(ticketDTO.getEvent().getLocation().getZipCode(), ticket.getEvent().getLocation().getZipCode());
     }
 
 //    @Test

@@ -18,6 +18,11 @@
         <docker.image.prefix>jevent</docker.image.prefix>
         <sonar.organization>robbyquintienspxl</sonar.organization>
         <sonar.host.url>https://sonarcloud.io</sonar.host.url>
+        <sonar.exclusions>**/TicketDTO.java</sonar.exclusions>
+        <sonar.exclusions>**/TicketUserDTO.java</sonar.exclusions>
+        <sonar.exclusions>**/TicketEvent.java</sonar.exclusions>
+        <sonar.exclusions>**/CreateFullTicketResource.java</sonar.exclusions>
+        <sonar.exclusions>**/UserNameFilter.java</sonar.exclusions>
     </properties>
     <dependencies>
         <dependency>
