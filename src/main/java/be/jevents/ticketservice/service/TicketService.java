@@ -110,10 +110,15 @@ public class TicketService {
 
     private int getLatestTicketNumberFromEvent(Long eventId) {
         long count = ticketRepository.findTicketsByEventId(eventId).size();
+        int number = 0;
         if (count == 0) {
             return 1;
         }
-        return ticketRepository.findTicketsByEventId(eventId).stream().map(Ticket::getTicketNumber).skip(count - 1).findFirst().get() + 1;
+        Optional<Integer> ticket = ticketRepository.findTicketsByEventId(eventId).stream().map(Ticket::getTicketNumber).skip(count - 1).findFirst();
+        if(ticket.isPresent()){
+            number = ticket.get() + 1;
+        }
+        return number;
     }
 
     public TicketEvent createTicketEvent(int amount, int ticketId, Event event, TicketUser ticketUser) {
