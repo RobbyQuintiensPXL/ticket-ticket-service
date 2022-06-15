@@ -1,10 +1,12 @@
 package be.jevents.ticketservice;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
 
+@SpringBootTest
 public class TicketServiceApplicationTest {
+
     @Test
-    public void main() {
-        TicketServiceApplication.main(new String[] {});
+    void contextLoads() {
     }
 }

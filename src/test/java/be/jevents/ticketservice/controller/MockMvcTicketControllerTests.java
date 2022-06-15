@@ -24,10 +24,10 @@ public class MockMvcTicketControllerTests {
     @MockBean
     private TicketService ticketService;
 
-    @Test
-    public void getTicketInfoTest(){
-        TicketDTO ticket = mock(TicketDTO.class);
-        when(ticketService.getTicketInfo(anyLong())).thenReturn(ticket);
-        //mockMvc.perform(get("/ticket/{ticketId}"))
-    }
+//    @Test
+//    public void getTicketInfoTest(){
+//        TicketDTO ticket = mock(TicketDTO.class);
+//        when(ticketService.getTicketInfo(anyLong())).thenReturn(ticket);
+//        //mockMvc.perform(get("/ticket/{ticketId}"))
+//    }
 }
