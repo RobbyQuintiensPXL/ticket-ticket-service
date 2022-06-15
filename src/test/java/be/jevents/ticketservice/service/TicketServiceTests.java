@@ -32,7 +32,7 @@ import static org.mockito.Mockito.when;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @ActiveProfiles("test")
-public class TickerServiceTests {
+public class TicketServiceTests {
 
     private final static Long EVENT_ID = 1L;
     @MockBean
@@ -113,24 +113,24 @@ public class TickerServiceTests {
         assertEquals(ticketDTO.getEvent().getLocation().getZipCode(), ticket.getEvent().getLocation().getZipCode());
     }
 
-//    @Test
-//    public void createTicket() {
-//        init();
-//        ticketService = mock(TicketService.class);
-//        when(ticketRepository.save(any(Ticket.class))).thenReturn(ticket);
-//        when(eventFeignClient.getEvent(event.getId())).thenReturn(event);
-//        when(ticketService.createTicketEvent(2, 1, any(Event.class), any(TicketUser.class))).thenReturn(ticketEvent);
-//
-//        CreateFullTicketResource ticketResource = new CreateFullTicketResource(
-//                ticket.getEventId(), ticket.getUsername(), ticketUser.getName(),
-//                ticketUser.getFirstName(), ticketUser.getStreet(), ticketUser.getCity(),
-//                ticketUser.getZipCode(), ticketUser.getCountry(), ticketUser.getEmail(),
-//        );
-//
-//        ticketService.createTicket(ticketResource, ticket.getUsername());
-//
-//        assertEquals(ticketResource.getEventId(), ticket.getEventId());
-//    }
+    @Test
+    public void createTicket() {
+        init();
+        ticketService = mock(TicketService.class);
+        when(ticketRepository.save(any(Ticket.class))).thenReturn(ticket);
+        when(eventFeignClient.getEvent(event.getId())).thenReturn(event);
+        when(ticketService.createTicketEvent(anyInt(), anyInt(), any(Event.class), any(TicketUser.class))).thenReturn(ticketEvent);
+
+        CreateFullTicketResource ticketResource = new CreateFullTicketResource(
+                ticket.getEventId(), ticket.getUsername(), ticketUser.getName(),
+                ticketUser.getFirstName(), ticketUser.getStreet(), ticketUser.getCity(),
+                ticketUser.getZipCode(), ticketUser.getCountry(), ticketUser.getEmail(), 1
+        );
+
+        ticketService.createTicket(ticketResource, ticket.getUsername());
+
+        assertEquals(ticketResource.getEventId(), ticket.getEventId());
+    }
 
     @Test
     public void getEventsByUserTest() {

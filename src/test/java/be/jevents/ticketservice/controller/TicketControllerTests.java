@@ -1,5 +1,6 @@
 package be.jevents.ticketservice.controller;
 
+import be.jevents.ticketservice.controller.controlleradvice.TicketControllerAdvice;
 import be.jevents.ticketservice.dto.TicketDTO;
 import be.jevents.ticketservice.model.Event;
 import be.jevents.ticketservice.model.Ticket;
@@ -11,9 +12,7 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
+import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -23,15 +22,13 @@ import java.util.Objects;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.in;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 @RunWith(SpringRunner.class)
+@ImportAutoConfiguration(TicketControllerAdvice.class)
 public class TicketControllerTests {
 
     @InjectMocks
@@ -66,7 +63,7 @@ public class TicketControllerTests {
     }
 
     @Test
-    public void getEventInfoTest(){
+    public void getEventInfoTest() {
         init();
         when(ticketService.getEventInfo(event.getId())).thenReturn(event);
 
@@ -80,7 +77,7 @@ public class TicketControllerTests {
     }
 
     @Test
-    public void getAmountOfTicketsLeftTest(){
+    public void getAmountOfTicketsLeftTest() {
         init();
         int amount = 2;
         when(ticketService.getSoldTicketsAmountForEvent(event.getId())).thenReturn(amount);
@@ -92,7 +89,7 @@ public class TicketControllerTests {
     }
 
     @Test
-    public void validateTicketTest(){
+    public void validateTicketTest() {
         init();
         ResponseEntity<Void> responseEntity = ticketController.validateTicket(ticket.getTicketNumber(),
                 ticket.getEventId(), ticketUser.getId());
