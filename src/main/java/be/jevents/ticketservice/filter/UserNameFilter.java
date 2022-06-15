@@ -1,7 +1,7 @@
 package be.jevents.ticketservice.filter;
 
-import org.json.JSONObject;
 import org.apache.commons.codec.binary.Base64;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
@@ -21,7 +21,6 @@ public class UserNameFilter {
         if (requestHeaders.get(AUTH_TOKEN) != null) {
             List<String> header = requestHeaders.get(AUTH_TOKEN);
             assert header != null;
-            // String head = String.valueOf(header.stream().findFirst().isPresent());
             String head = header.stream().findFirst().orElse("test");
             String authToken = head.replace("Bearer ", "");
             JSONObject jsonObj = decodeJWT(authToken);

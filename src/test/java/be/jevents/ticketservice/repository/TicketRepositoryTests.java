@@ -15,6 +15,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 
 import javax.persistence.EntityManager;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -78,5 +79,29 @@ public class TicketRepositoryTests {
         assertThat(ticketList.get(0).getStatus()).isEqualTo(ticket.getStatus());
         assertThat(ticketList.get(0).getEventId()).isEqualTo(ticket.getEventId());
         assertThat(ticketList.get(0).getTicketUser().getEmail()).isEqualTo(ticket.getTicketUser().getEmail());
+    }
+
+    @Test
+    public void findTicketByUsernameTest() {
+        persist();
+        List<Ticket> ticketList = ticketRepository.findTicketByUsername(ticket.getUsername());
+
+        assertThat(ticketList).isNotEmpty();
+        assertThat(ticketList.get(0).getStatus()).isEqualTo(ticket.getStatus());
+        assertThat(ticketList.get(0).getEventId()).isEqualTo(ticket.getEventId());
+        assertThat(ticketList.get(0).getTicketUser().getEmail()).isEqualTo(ticket.getTicketUser().getEmail());
+    }
+
+    @Test
+    public void findTicketByTicketNumberAndEventIdAndTicketUser_IdTest() {
+        persist();
+        Optional<Ticket> foundTicket =
+                ticketRepository.findTicketByTicketNumberAndEventIdAndTicketUser_Id(ticket.getTicketNumber(),
+                        ticket.getEventId(), ticketUser.getId());
+
+        assertThat(foundTicket).isNotEmpty();
+        assertThat(foundTicket.get().getStatus()).isEqualTo(ticket.getStatus());
+        assertThat(foundTicket.get().getUsername()).isEqualTo(ticket.getUsername());
+        assertThat(foundTicket.get().getTicketUser().getEmail()).isEqualTo(ticket.getTicketUser().getEmail());
     }
 }

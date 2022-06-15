@@ -16,6 +16,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 
 import javax.persistence.EntityManager;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -60,7 +61,7 @@ public class TicketUserRepositoryTests {
     }
 
     @Test
-    public void findAllTicketUsers() {
+    public void findAllTicketUsersTest() {
         persist();
         List<TicketUser> ticketUserList = ticketUserRepository.findAll();
 
@@ -68,5 +69,16 @@ public class TicketUserRepositoryTests {
         assertThat(ticketUserList.get(0).getEmail()).isEqualTo(ticketUser.getEmail());
         assertThat(ticketUserList.get(0).getCity()).isEqualTo(ticketUser.getCity());
         assertThat(ticketUserList.get(0).getStreet()).isEqualTo(ticketUser.getStreet());
+    }
+
+    @Test
+    public void findByEMailTest() {
+        persist();
+        Optional<TicketUser> foundTicketUser = ticketUserRepository.findByEmail(ticketUser.getEmail());
+
+        assertThat(foundTicketUser).isNotEmpty();
+        assertThat(foundTicketUser.get().getEmail()).isEqualTo(ticketUser.getEmail());
+        assertThat(foundTicketUser.get().getCity()).isEqualTo(ticketUser.getCity());
+        assertThat(foundTicketUser.get().getStreet()).isEqualTo(ticketUser.getStreet());
     }
 }

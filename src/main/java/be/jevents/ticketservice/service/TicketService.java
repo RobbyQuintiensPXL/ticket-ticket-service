@@ -115,7 +115,7 @@ public class TicketService {
             return 1;
         }
         Optional<Integer> ticket = ticketRepository.findTicketsByEventId(eventId).stream().map(Ticket::getTicketNumber).skip(count - 1).findFirst();
-        if(ticket.isPresent()){
+        if (ticket.isPresent()) {
             number = ticket.get() + 1;
         }
         return number;
@@ -132,7 +132,7 @@ public class TicketService {
             throw new TicketException("No ticket found for id:" + ticketNumber + eventId + ticketUser);
         }
 
-        if (foundTicket.get().isValidated()){
+        if (foundTicket.get().isValidated()) {
             throw new TicketException("Ticket is already validated");
         }
 

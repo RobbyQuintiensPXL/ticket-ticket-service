@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public interface EventFeignClient {
 
     @RequestMapping(
-      method = RequestMethod.GET,
+            method = RequestMethod.GET,
             value = "/events/{eventId}",
             consumes = "application/json")
     Event getEvent(@PathVariable("eventId") Long eventId);

@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -50,6 +51,7 @@ public class TickerServiceTests {
     public void init() {
 
         ticketUser = new TicketUser();
+        ticketUser.setId(1L);
         ticketUser.setName("Name");
         ticketUser.setFirstName("FirstName");
         ticketUser.setEmail("username@test.be");
@@ -68,6 +70,8 @@ public class TickerServiceTests {
         event.setId(1L);
         event.setEventName("EventName");
         event.setEventType("Type");
+        ticket.setEventId(event.getId());
+        ticket.setTicketNumber(1);
 
         Location location = new Location();
         location.setBuildingName("Building");
@@ -102,28 +106,28 @@ public class TickerServiceTests {
         assertEquals(ticketDTO.getEvent().getEventName(), ticket.getEvent().getEventName());
         assertEquals(ticketDTO.getEvent().getEventType(), ticket.getEvent().getEventType());
     }
-/*
+
+//    @Test
+//    public void createTicket() {
+//        init();
+//        ticketService = mock(TicketService.class);
+//        when(ticketRepository.save(any(Ticket.class))).thenReturn(ticket);
+//        when(eventFeignClient.getEvent(event.getId())).thenReturn(event);
+//        when(ticketService.createTicketEvent(2, 1, any(Event.class), any(TicketUser.class))).thenReturn(ticketEvent);
+//
+//        CreateFullTicketResource ticketResource = new CreateFullTicketResource(
+//                ticket.getEventId(), ticket.getUsername(), ticketUser.getName(),
+//                ticketUser.getFirstName(), ticketUser.getStreet(), ticketUser.getCity(),
+//                ticketUser.getZipCode(), ticketUser.getCountry(), ticketUser.getEmail(),
+//        );
+//
+//        ticketService.createTicket(ticketResource, ticket.getUsername());
+//
+//        assertEquals(ticketResource.getEventId(), ticket.getEventId());
+//    }
+
     @Test
-    public void createTicket() {
-        init();
-        ticketService = mock(TicketService.class);
-        when(ticketRepository.save(any(Ticket.class))).thenReturn(ticket);
-        when(eventFeignClient.getEvent(event.getId())).thenReturn(event);
-        when(ticketService.createTicketEvent(any(Ticket.class), any(Event.class), any(TicketUser.class))).thenReturn(ticketEvent);
-
-        CreateFullTicketResource ticketResource = new CreateFullTicketResource(
-                ticket.getEventId(), ticket.getUsername(), ticketUser.getName(),
-                ticketUser.getFirstName(), ticketUser.getStreet(), ticketUser.getCity(),
-                ticketUser.getZipCode(), ticketUser.getCountry(), ticketUser.getEmail(), ticketUser.getNumberOfTickets()
-        );
-
-        ticketService.createTicket(ticketResource, ticket.getUsername());
-
-        assertEquals(ticketResource.getEventId(), ticket.getEventId());
-    }*/
-
-    @Test
-    public void getEventsByUser() {
+    public void getEventsByUserTest() {
         init();
         List<Ticket> ticketList = new LinkedList<>();
         ticketList.add(ticket);
@@ -135,6 +139,29 @@ public class TickerServiceTests {
         assertEquals(ticketList.get(0).getEventId(), ticketDTOList.get(0).getEventId());
     }
 
+    @Test
+    public void getSoldTicketsAmountForEventTest(){
+        init();
+        List<Ticket> ticketList = new LinkedList<>();
+        ticketList.add(ticket);
+        when(ticketRepository.findTicketsByEventId(anyLong())).thenReturn(ticketList);
+
+        int amount = ticketService.getSoldTicketsAmountForEvent(event.getId());
+
+        assertEquals(amount, ticketList.size());
+    }
+
+    @Test
+    public void validateTicketTest(){
+        init();
+        when(ticketRepository.findTicketByTicketNumberAndEventIdAndTicketUser_Id(anyInt(), anyLong(), anyLong()))
+                .thenReturn(Optional.ofNullable(ticket));
+
+        ticketService.validateTicket(ticket.getTicketNumber(), ticket.getEventId(), ticket.getTicketUser().getId());
+
+        assertTrue(ticket.isValidated());
+    }
+
     @Test(expected = TicketException.class)
     public void throwExceptionTicketByIdNotFound() {
         ticketService.getTicketInfo(anyLong());
@@ -143,6 +170,11 @@ public class TickerServiceTests {
     @Test(expected = TicketException.class)
     public void throwExceptionTEventByUserNotFound() {
         ticketService.getEventsByUser(anyString());
+    }
+
+    @Test(expected = TicketException.class)
+    public void throwExceptionTicketAlreadyValidated() {
+        ticketService.validateTicket(anyInt(), anyLong(), anyLong());
     }
 
 

@@ -1,9 +1,7 @@
 package be.jevents.ticketservice.events;
 
 import be.jevents.ticketservice.model.Event;
-import be.jevents.ticketservice.model.Ticket;
 import be.jevents.ticketservice.model.TicketUser;
-import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.time.LocalDate;
 import java.time.LocalTime;

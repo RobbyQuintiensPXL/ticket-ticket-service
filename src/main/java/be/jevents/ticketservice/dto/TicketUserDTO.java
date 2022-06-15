@@ -1,11 +1,6 @@
 package be.jevents.ticketservice.dto;
 
-import be.jevents.ticketservice.model.Ticket;
 import be.jevents.ticketservice.model.TicketUser;
-
-import javax.persistence.Column;
-import javax.persistence.OneToMany;
-import java.util.List;
 
 public class TicketUserDTO {
 
@@ -18,7 +13,7 @@ public class TicketUserDTO {
     private final String country;
     private final String email;
 
-    public TicketUserDTO(TicketUser ticketUser){
+    public TicketUserDTO(TicketUser ticketUser) {
         this.id = ticketUser.getId();
         this.name = ticketUser.getName();
         this.firstName = ticketUser.getFirstName();

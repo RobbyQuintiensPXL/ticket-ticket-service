@@ -11,7 +11,7 @@ public class TicketDTO {
     private final String ticketUserName;
     private final int ticketNumber;
 
-    public TicketDTO(Ticket ticket){
+    public TicketDTO(Ticket ticket) {
         this.id = ticket.getId();
         this.eventId = ticket.getEventId();
         this.event = ticket.getEvent();
